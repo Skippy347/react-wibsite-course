@@ -19,16 +19,33 @@ class App extends Component {
                 { id: 4, name: "Maxim P", salary: 4000, increase: false },
             ],
         };
+        this.maxId = 5;
     }
 
     deleteItem = (id) => {
         console.log(id);
-        this.setState(({data}) => {
+        this.setState(({ data }) => {
             return {
-                data: data.filter(item => item.id !== id)
-            }
-        })
-    }
+                data: data.filter((item) => item.id !== id),
+            };
+        });
+    };
+    //(name, salary) добавили потому что мы их получим с поимка
+    addItem = (name, salary) => {
+        const newItem = {
+            id: this.maxId++,
+            name,
+            salary,
+            increase: false,
+        };
+        this.setState(({ data }) => {
+            const newArr = [...data, newItem];
+
+            return {
+                data: newArr,
+            };
+        });
+    };
 
     render() {
         const { data } = this.state;
@@ -40,8 +57,8 @@ class App extends Component {
                     <SearchPanel />
                     <AppFilter />
                 </div>
-                <EmployeesList data={data} onDelete = {this.deleteItem} />
-                <EmployeesAddForm />
+                <EmployeesList data={data} onDelete={this.deleteItem} />
+                <EmployeesAddForm onAdd={this.addItem} />
             </div>
         );
     }
